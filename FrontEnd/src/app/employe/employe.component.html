@@ -1,0 +1,216 @@
+<h2 class="text-primary text-center">Employee List</h2>
+<button class="btn btn-primary p-2 m-2" data-toggle="modal" data-target="#newmodal" > 
+    <li class="fa fa-plus"></li> Add/student</button>
+
+  
+<div class="p-2 m-2">
+  <div class="row">
+  <div class="form-group col-3">
+    <label for="nameFilter">Name Filter:</label>
+    <input type="text" id="nameFilter" class="form-control" [(ngModel)]="filterQuery.name" (input)="applyFilters()">
+  </div>
+
+ &nbsp; &nbsp; 
+  <div class="form-group col-3">
+    <label for="addressFilter">Address Filter:</label>&nbsp;&nbsp;&nbsp;
+    <input type="text" id="addressFilter" class="form-control" [(ngModel)]="filterQuery.address" (input)="applyFilters()">
+  </div>
+  
+  <div class="form-group ">
+    <label for="marksFilter">Marks Filter:</label>
+    <input type="text" id="marksFilter" class="form-control" [(ngModel)]="filterQuery.marks" (input)="applyFilters()">
+  </div>
+
+</div>
+  
+<table class="table table-bordered table-stripe">
+<thead>
+
+    <tr>
+      <th (click)="sortData('name')">Name
+        <span *ngIf="sortColumn === 'name' && sortDirection === 'asc'">▲</span>
+        <span *ngIf="sortColumn === 'name' && sortDirection === 'desc'">▼</span>
+      </th>
+      <th (click)="sortData('address')">Address
+        <span *ngIf="sortColumn === 'address' && sortDirection === 'asc'">▲</span>
+        <span *ngIf="sortColumn === 'address' && sortDirection === 'desc'">▼</span>
+      </th>
+      <th (click)="sortData('marks')">Marks
+        <span *ngIf="sortColumn === 'marks' && sortDirection === 'asc'">▲</span>
+        <span *ngIf="sortColumn === 'marks' && sortDirection === 'desc'">▼</span>
+      </th>
+     
+        
+        <th>Action</th>
+
+    </tr>
+</thead>
+<tbody>
+  <tr *ngFor="let emp of Emplist ">
+    <td>{{emp.name}}</td>
+    <td>{{emp.address}}</td>
+    <td>{{emp.marks}}</td>
+    <!-- <td>
+      <img [src]="emp.picture" height="100" >
+    </td> -->
+
+    <td>
+      <button  class="btn btn-info m-1 " (click)="EditClick(emp)" data-toggle="modal" data-target="#Edit">
+        <li class="fa fa-edit"></li>
+      </button>
+      <button class="btn btn-danger"  (click)="DeleteClick(emp.id)" >
+        <li class="fa fa-trash"></li>
+      </button>
+    </td>
+    
+   
+  
+  </tr>
+  <div *ngIf="filterQueryChanged.length===0">
+    <a class="text-danger justify-content-center">Data are not found</a>
+  </div>
+</tbody>
+</table>
+
+</div>
+
+<div class="row">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  
+  <div class="col-6 pagination-container">
+    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+    <button class="pagination-button m-2" (click)="previousPage()" [disabled]="currentPage === 1">Prev</button>
+    <button class="pagination-button" (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+  </div>
+
+  <div class="col-5 d-flex justify-content-end">
+    <div class="custom-select-wrapper">
+      <label for="pageSizeSelect">Page Size:</label>
+      <select id="pageSizeSelect" [(ngModel)]="selectedPageSize" (change)="changePageSize()">
+        <option *ngFor="let size of availablePageSizes" [value]="size">{{ size }}</option>
+      </select>
+      <div class="custom-select-arrow"></div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- new -->
+<div class="modal" tabindex="-1" role="dialog" id="newmodal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">New student</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span>&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        <div class="form-group row">
+        <label for="name" class="col-sm-4" >Name</label>
+        <div class="col-sm-8">
+<input id="name"  type="text" [(ngModel)]="NewEmploye.name" name="name" placeholder="Enter your Name" class="form-control"/>
+        </div>
+        </div>
+        <div class="form-group row">
+        <label for="Address" class="col-sm-4" >Address</label>
+        <div class="col-sm-8">
+<input id="Address" type="text" [(ngModel)]="NewEmploye.address"  name="address" placeholder="Enter your Address" class="form-control"/>
+        </div>
+        </div>
+        <div class="form-group row">
+        <label for="salary" class="col-sm-4" >Marks</label>
+        <div class="col-sm-8">
+<input id="salary"  type="text" [(ngModel)]="NewEmploye.marks" name="marks" placeholder="Enter your marks" class="form-control"/>
+        </div>
+        </div>
+        <!-- <div class="form-group row">
+          <label for="pict" class="col-sm-4" >Picture</label>
+          <div class="col-sm-8">
+           
+  <input id="pict" type="file" alt="NewEmploye.picture" [(ngModel)]="NewEmploye.picture"  class="form-control"/>
+   <img [src]="url"  height="50" />
+          </div>
+          </div> -->
+       
+        
+  
+        
+        </div>
+        <div class="modal-footer">
+          <button  type="button" (click)="Save()"   data-dismiss="modal" class="btn btn-primary">Save </button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  
+ 
+
+
+<!-- //Edit  -->
+  <div class="modal" tabindex="-1" role="dialog" id="Edit">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">update </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span>&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        <div class="form-group row">
+        <label for="name" class="col-sm-4" >Name</label>
+        <div class="col-sm-8">
+<input id="name"  type="text" [(ngModel)]="EditEmploye.name" name="name" placeholder="Enter your Name" class="form-control"/>
+        </div>
+        </div>
+        <div class="form-group row">
+        <label for="Address" class="col-sm-4" >Address</label>
+        <div class="col-sm-8">
+<input id="Address" type="text" [(ngModel)]="EditEmploye.address"  name="address" placeholder="Enter your Address" class="form-control"/>
+        </div>
+        </div>
+        <div class="form-group row">
+        <label for="salary" class="col-sm-4" >Marks</label>
+        <div class="col-sm-8">
+<input id="salary"  type="text" [(ngModel)]="EditEmploye.marks" name="marks" placeholder="Enter your marks" class="form-control"/>
+        </div>
+        </div>
+          <!-- <div class="form-group row">
+          <label for="pict" class="col-sm-4" >Picture</label>
+          <div class="col-sm-8">
+           
+  <input id="pict" type="file"  [(ngModel)]="EditEmploye.picture"    height="50"  name="Files" accept=".jpg" (change)="onselected($event)" class="form-control"/>
+  
+    <img [src]="EditEmploye.picture"  height="50" />
+  
+   
+          </div>
+          </div> -->
+      
+        </div>
+        <div class="modal-footer">
+          <button  type="button" (click)="Update()"   data-dismiss="modal" class="btn btn-primary">Update </button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+   
+</div>
+
+
+
+
+
+
+
+
+
+
+

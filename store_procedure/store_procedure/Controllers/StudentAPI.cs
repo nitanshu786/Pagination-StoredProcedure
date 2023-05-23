@@ -83,6 +83,41 @@ namespace store_procedure.Controllers
             }
             return student;
         }
+        
+        [Route("pagination")]
+        [HttpGet]
+         public List<Student> GetEmployeesByPage(int pageNumber, int pageSize)
+        {
+            var students = new List<Student>();
+            using (SqlConnection connection = new SqlConnection(_connectionstring))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand("GetStudentsByPage", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@PageNumber", pageNumber);
+                    command.Parameters.AddWithValue("@PageSize", pageSize);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Student student = new Student
+                            {
+                                Id = (int)reader["Id"],
+                                Name = (string)reader["Name"],
+                                Address = (string)reader["Address"],
+                                Marks = (int)reader["Marks"]
+                            };
+                            students.Add(student);
+                        }
+                    }
+                }
+            }
+            return students ;
+        }
+
+
 
         [HttpPut]
         public void  Studentupdate(Student student)
@@ -105,12 +140,10 @@ namespace store_procedure.Controllers
                     }
                 }
             }
-
         [HttpPost]
         public void StudentSave(Student student)
         {
-
-            using (var connection = new SqlConnection(_connectionstring))
+                using (var connection = new SqlConnection(_connectionstring))
             {
                 using (var command = new SqlCommand("StudentProcedure", connection))
                 {
@@ -123,15 +156,13 @@ namespace store_procedure.Controllers
                     command.Parameters.AddWithValue("@Operation", "CREATE");
 
                     command.ExecuteNonQuery();
-
                 }
             }
         }
-
+     
         [HttpDelete("{id:int}")]
-        public void StudentSave(int id)
+        public void Studentdelete(int id)
         {
-
             using (var connection = new SqlConnection(_connectionstring))
             {
                 using (var command = new SqlCommand("StudentProcedure", connection))
@@ -142,10 +173,8 @@ namespace store_procedure.Controllers
                     command.Parameters.AddWithValue("@Operation", "DELETE");
 
                     command.ExecuteNonQuery();
-
                 }
             }
         }
-
     }
 }

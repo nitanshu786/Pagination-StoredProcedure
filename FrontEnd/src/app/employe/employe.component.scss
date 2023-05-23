@@ -1,0 +1,79 @@
+.stylish-dropdown {
+    position: relative;
+  }
+  
+  .custom-select-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .custom-select-wrapper select {
+    appearance: none;
+    background-color: transparent;
+    border: none;
+    padding: 5px 10px;
+    font-size: 16px;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 120px;
+  }
+  
+  .custom-select-wrapper .custom-select-arrow {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    border-top: 4px solid #999;
+    border-right: 4px solid #999;
+    transition: transform 0.3s;
+    pointer-events: none;
+  }
+  
+  .custom-select-wrapper select:focus + .custom-select-arrow {
+    transform: translateY(-50%) rotate(180deg);
+  }
+  
+  .custom-select-wrapper select option {
+    background-color: #fff;
+    color: #333;
+  }
+  
+  .custom-select-wrapper select option:hover {
+    background-color: #f5f5f5;
+  }
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .pagination-button {
+    display: inline-block;
+    padding: 8px 16px;
+    margin-right: 4px;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .pagination-button:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .pagination-button.active {
+    background-color: #2c7ef7;
+    color: #fff;
+  }
+  
+  .pagination-button.disabled {
+    pointer-events: none;
+    opacity: 0.6;
+  }
+  
